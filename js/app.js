@@ -1,4 +1,7 @@
 'use strict';
+var randomIndex1 = 0;
+var randomIndex2 = 0;
+var randomIndex3 = 0;
 var votingRound = 0;
 var catalogArray = [];
 var myThreePictures = document.getElementById('myThreePictures');
@@ -35,20 +38,19 @@ var water_can = new CatalogItem('Watering Can', 'img/water-can.jpg');//eslint-di
 var wine_glass = new CatalogItem('Wine Glass', 'img/wine-glass.jpg');//eslint-disable-line
 
 function randomThreePictures() {
-  var randomIndex1 = Math.floor(Math.random() * (catalogArray.length));
-  console.log(randomIndex1);
+  randomIndex1 = Math.floor(Math.random() * (catalogArray.length));
 
-  var randomIndex2 = Math.floor(Math.random() * (catalogArray.length));
+  randomIndex2 = Math.floor(Math.random() * (catalogArray.length));
   while (randomIndex2 === randomIndex1) {
     randomIndex2 = Math.floor(Math.random() * (catalogArray.length));
   }
-  console.log(randomIndex2);
 
-  var randomIndex3 = Math.floor(Math.random() * (catalogArray.length));
+
+  randomIndex3 = Math.floor(Math.random() * (catalogArray.length));
   while (randomIndex3 === randomIndex2 || randomIndex3 === randomIndex1) {
     randomIndex3 = Math.floor(Math.random() * (catalogArray.length));
   }
-  console.log(randomIndex3);
+  console.log(randomIndex1, randomIndex2, randomIndex3);
 
   imgLeft.src = catalogArray[randomIndex1].filePath;
   imgCenter.src = catalogArray[randomIndex2].filePath;
@@ -62,14 +64,31 @@ function randomThreePictures() {
 randomThreePictures();
 
 function handleUserClick() {
-  var userClick = event.target;
-  if (userClick === imgLeft) {
+  var userClick = event.target.id;
+  console.log(userClick);
+  if (userClick === 'left') {
     console.log('user clicked left');
     votingRound = votingRound + 1;
-    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1] + 1;
+    console.log('voting round: ' + votingRound);
+    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1].tallyClicked + 1;
+    console.log(catalogArray[randomIndex1].imageName + ' tally clicked: ' + catalogArray[randomIndex1].tallyClicked);
+    randomThreePictures();
+  }else if (userClick === 'center'){
+    console.log('user clicked center');
+    votingRound = votingRound + 1;
+    console.log('voting round: ' + votingRound);
+    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
+    console.log(catalogArray[randomIndex2]);
+    console.log(catalogArray[randomIndex2].imageName + ' tally clicked: ' + catalogArray[randomIndex2].tallyClicked);
+    randomThreePictures();
+  }else if (userClick === 'right') {
+    console.log('user clicked right');
+    votingRound = votingRound + 1;
+    console.log('voting round: ' + votingRound);
+    catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
+    console.log(catalogArray[randomIndex3].imageName + ' tally clicked: ' + catalogArray[randomIndex3].tallyClicked);
     randomThreePictures();
   }else {
-    alert('Nope, this is not a picture. Try again.');
   }
 }
 
