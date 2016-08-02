@@ -66,29 +66,41 @@ randomThreePictures();
 function handleUserClick() {
   var userClick = event.target.id;
   console.log(userClick);
-  if (userClick === 'left') {
-    console.log('user clicked left');
-    votingRound = votingRound + 1;
-    console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1].tallyClicked + 1;
-    console.log(catalogArray[randomIndex1].imageName + ' tally clicked: ' + catalogArray[randomIndex1].tallyClicked);
-    randomThreePictures();
-  }else if (userClick === 'center'){
-    console.log('user clicked center');
-    votingRound = votingRound + 1;
-    console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
-    console.log(catalogArray[randomIndex2]);
-    console.log(catalogArray[randomIndex2].imageName + ' tally clicked: ' + catalogArray[randomIndex2].tallyClicked);
-    randomThreePictures();
-  }else if (userClick === 'right') {
-    console.log('user clicked right');
-    votingRound = votingRound + 1;
-    console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
-    console.log(catalogArray[randomIndex3].imageName + ' tally clicked: ' + catalogArray[randomIndex3].tallyClicked);
-    randomThreePictures();
+  if (votingRound < 3) {
+    if (userClick === 'left') {
+      console.log('user clicked left');
+      votingRound = votingRound + 1;
+      console.log('voting round: ' + votingRound);
+      catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1].tallyClicked + 1;
+      console.log(catalogArray[randomIndex1].imageName + ' clicked: ' + catalogArray[randomIndex1].tallyClicked + ' times');
+      randomThreePictures();
+    }else if (userClick === 'center'){
+      console.log('user clicked center');
+      votingRound = votingRound + 1;
+      console.log('voting round: ' + votingRound);
+      catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
+      console.log(catalogArray[randomIndex2]);
+      console.log(catalogArray[randomIndex2].imageName + ' clicked: ' + catalogArray[randomIndex2].tallyClicked + ' times');
+      randomThreePictures();
+    }else if (userClick === 'right') {
+      console.log('user clicked right');
+      votingRound = votingRound + 1;
+      console.log('voting round: ' + votingRound);
+      catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
+      console.log(catalogArray[randomIndex3].imageName + ' clicked: ' + catalogArray[randomIndex3].tallyClicked + ' times');
+      randomThreePictures();
+    }else {
+      alert('That\'s not even a picture. Try again.');
+    }
   }else {
+    myThreePictures.removeEventListener('click',handleUserClick);
+    var button = document.createElement('button');
+    button.textContent = 'you\'re done so click here';
+    myThreePictures.appendChild(button);
+    function handleButtonClick() {
+      alert('This shit works');
+    }
+    button.addEventListener('click', handleButtonClick);
   }
 }
 
