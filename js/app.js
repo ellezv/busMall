@@ -97,7 +97,6 @@ function handleUserClick() {
     console.log('voting round: ' + votingRound);
     catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
     console.log(catalogArray[randomIndex3].imageName + ' clicked: ' + catalogArray[randomIndex3].tallyClicked + ' times');
-    randomThreePictures();
   }else {
     alert('That\'s not even a picture. Try again.');
   }
