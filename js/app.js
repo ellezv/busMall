@@ -1,10 +1,14 @@
 'use strict';
-var resultList = document.getElementById('resultList');
 var randomIndex1 = 0;
 var randomIndex2 = 0;
 var randomIndex3 = 0;
 var votingRound = 0;
 var catalogArray = [];
+var lastIndexArray = [0,1,2];
+var indexArray = [];
+var clicks = [];
+var names = [];
+var clickChart; 
 var myThreePictures = document.getElementById('myThreePictures');
 var imgLeft = document.getElementById('left');
 var imgCenter = document.getElementById('center');
@@ -38,20 +42,35 @@ var usb = new CatalogItem('USB', 'img/usb.jpg');//eslint-disable-line
 var water_can = new CatalogItem('Watering Can', 'img/water-can.jpg');//eslint-disable-line
 var wine_glass = new CatalogItem('Wine Glass', 'img/wine-glass.jpg');//eslint-disable-line
 
+
 function randomThreePictures() {
   randomIndex1 = Math.floor(Math.random() * (catalogArray.length));
+  while (lastIndexArray.indexOf(randomIndex1) !== -1) {
+    randomIndex1 = Math.floor(Math.random() * (catalogArray.length));
+  }
 
   randomIndex2 = Math.floor(Math.random() * (catalogArray.length));
-  while (randomIndex2 === randomIndex1) {
+  while (((randomIndex2 === randomIndex1)) || (lastIndexArray.indexOf(randomIndex2) !== -1)) {
     randomIndex2 = Math.floor(Math.random() * (catalogArray.length));
+    console.log('duplicates');
   }
-
 
   randomIndex3 = Math.floor(Math.random() * (catalogArray.length));
-  while (randomIndex3 === randomIndex2 || randomIndex3 === randomIndex1) {
+  while (((randomIndex3 === randomIndex2) || (randomIndex3 === randomIndex1)) || (lastIndexArray.indexOf(randomIndex3) !== -1)) {
     randomIndex3 = Math.floor(Math.random() * (catalogArray.length));
+    console.log('duplicates');
   }
+
   console.log(randomIndex1, randomIndex2, randomIndex3);
+  indexArray.push(randomIndex1);
+  indexArray.push(randomIndex2);
+  indexArray.push(randomIndex3);
+
+  lastIndexArray = [];
+  lastIndexArray.push(randomIndex1);
+  lastIndexArray.push(randomIndex2);
+  lastIndexArray.push(randomIndex3);
+  indexArray = [];
 
   imgLeft.src = catalogArray[randomIndex1].filePath;
   imgLeft.alt = catalogArray[randomIndex1].imageName;
@@ -65,19 +84,43 @@ function randomThreePictures() {
   catalogArray[randomIndex3].tallyDisplayed = catalogArray[randomIndex3].tallyDisplayed + 1;
 }
 
-
-function handleButtonClick() {
+function updateChartArrays() {
   for (var i = 0; i < catalogArray.length; i++) {
-    var listEl = document.createElement('li');
-    listEl.textContent = catalogArray[i].imageName + ' was displayed ' + catalogArray[i].tallyDisplayed + ' times and clicked ' + catalogArray[i].tallyClicked;
-    resultList.appendChild(listEl);
+    names[i] = catalogArray[i].imageName;
+    clicks[i] = catalogArray[i].tallyClicked;
   }
 }
 
 
+var data = {
+  labels: names,
+  datasets: [
+    {
+      label: 'click count',
+      data: clicks,
+    }]
+};
+
+function drawChart() {
+  var ctx = document.getElementById('clickChart').getContext('2d');
+  clickChart = new Chart(ctx,{
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: false
+    },
+    scales: [{
+      ticks: {
+        beginAtZero:true
+      }
+    }]
+  });
+}
+
+
+
 function handleUserClick() {
   var userClick = event.target.id;
-  console.log(userClick);
   if (userClick === 'left') {
     console.log('user clicked left');
     votingRound = votingRound + 1;
@@ -88,7 +131,7 @@ function handleUserClick() {
     console.log('user clicked center');
     votingRound = votingRound + 1;
     console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
+    catalogArray[randomIndex2].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
     console.log(catalogArray[randomIndex2]);
     console.log(catalogArray[randomIndex2].imageName + ' clicked: ' + catalogArray[randomIndex2].tallyClicked + ' times');
   }else if (userClick === 'right') {
@@ -103,11 +146,12 @@ function handleUserClick() {
   if (votingRound < 25) {
     randomThreePictures();
   }else {
-    myThreePictures.removeEventListener('click',handleUserClick);
+    myThreePictures.removeEventListener('click', handleUserClick);
     var button = document.createElement('button');
     button.textContent = 'you\'re done so click here';
     myThreePictures.appendChild(button);
-    button.addEventListener('click', handleButtonClick);
+    updateChartArrays();
+    button.addEventListener('click', drawChart);
   }
 }
 
