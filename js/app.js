@@ -65,15 +65,11 @@ function randomThreePictures() {
   }
 
   console.log(randomIndex1, randomIndex2, randomIndex3);
-  indexArray.push(randomIndex1);
-  indexArray.push(randomIndex2);
-  indexArray.push(randomIndex3);
 
   lastIndexArray = [];
   lastIndexArray.push(randomIndex1);
   lastIndexArray.push(randomIndex2);
   lastIndexArray.push(randomIndex3);
-  indexArray = [];
 
   imgLeft.src = catalogArray[randomIndex1].filePath;
   imgLeft.alt = catalogArray[randomIndex1].imageName;
