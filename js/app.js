@@ -8,7 +8,7 @@ var lastIndexArray = [0,1,2];
 var indexArray = [];
 var clicks = [];
 var names = [];
-var clickChart; 
+var catalogArrayStringified;
 var myThreePictures = document.getElementById('myThreePictures');
 var imgLeft = document.getElementById('left');
 var imgCenter = document.getElementById('center');
@@ -21,27 +21,29 @@ function CatalogItem(imageName, filePath) {
   catalogArray.push(this);
 }
 
-var bag = new CatalogItem('Bag', 'img/bag.jpg'); //eslint-disable-line
-var banana = new CatalogItem('Banana', 'img/banana.jpg');//eslint-disable-line
-var bathroom = new CatalogItem('Bathroom', 'img/bathroom.jpg');//eslint-disable-line
-var boots = new CatalogItem('Boots', 'img/boots.jpg');//eslint-disable-line
-var breakfast = new CatalogItem('Breakfast', 'img/Breakfast.jpg');//eslint-disable-line
-var bubblegum = new CatalogItem('Bubblegum', 'img/bubblegum.jpg');//eslint-disable-line
-var chair = new CatalogItem('Chair', 'img/chair.jpg');//eslint-disable-line
-var cthulhu = new CatalogItem('Cthulhu', 'img/cthulhu.jpg');//eslint-disable-line
-var dog_duck = new CatalogItem('Dog Duck', 'img/dog-duck.jpg');//eslint-disable-line
-var dragon = new CatalogItem('Dragon', 'img/dragon.jpg');//eslint-disable-line
-var pen = new CatalogItem('Pen', 'img/pen.jpg');//eslint-disable-line
-var pet_sweep = new CatalogItem('Pet Sweep', 'img/pet-sweep.jpg');//eslint-disable-line
-var scissors = new CatalogItem('Scissors', 'img/scissors.jpg');//eslint-disable-line
-var shark = new CatalogItem('Shark', 'img/shark.jpg');//eslint-disable-line
-var sweep = new CatalogItem('Sweep', 'img/sweep.jpg');//eslint-disable-line
-var tauntaun = new CatalogItem('Tauntaun', 'img/tauntaun.jpg');//eslint-disable-line
-var unicorn = new CatalogItem('Unicorn', 'img/unicorn.jpg');//eslint-disable-line
-var usb = new CatalogItem('USB', 'img/usb.jpg');//eslint-disable-line
-var water_can = new CatalogItem('Watering Can', 'img/water-can.jpg');//eslint-disable-line
-var wine_glass = new CatalogItem('Wine Glass', 'img/wine-glass.jpg');//eslint-disable-line
 
+function makeMyStuff() {
+  new CatalogItem('Bag', 'img/bag.jpg'); //eslint-disable-line
+  new CatalogItem('Banana', 'img/banana.jpg');//eslint-disable-line
+  new CatalogItem('Bathroom', 'img/bathroom.jpg');//eslint-disable-line
+  new CatalogItem('Boots', 'img/boots.jpg');//eslint-disable-line
+  new CatalogItem('Breakfast', 'img/Breakfast.jpg');//eslint-disable-line
+  new CatalogItem('Bubblegum', 'img/bubblegum.jpg');//eslint-disable-line
+  new CatalogItem('Chair', 'img/chair.jpg');//eslint-disable-line
+  new CatalogItem('Cthulhu', 'img/cthulhu.jpg');//eslint-disable-line
+  new CatalogItem('Dog Duck', 'img/dog-duck.jpg');//eslint-disable-line
+  new CatalogItem('Dragon', 'img/dragon.jpg');//eslint-disable-line
+  new CatalogItem('Pen', 'img/pen.jpg');//eslint-disable-line
+  new CatalogItem('Pet Sweep', 'img/pet-sweep.jpg');//eslint-disable-line
+  new CatalogItem('Scissors', 'img/scissors.jpg');//eslint-disable-line
+  new CatalogItem('Shark', 'img/shark.jpg');//eslint-disable-line
+  new CatalogItem('Sweep', 'img/sweep.jpg');//eslint-disable-line
+  new CatalogItem('Tauntaun', 'img/tauntaun.jpg');//eslint-disable-line
+  new CatalogItem('Unicorn', 'img/unicorn.jpg');//eslint-disable-line
+  new CatalogItem('USB', 'img/usb.jpg');//eslint-disable-line
+  new CatalogItem('Watering Can', 'img/water-can.jpg');//eslint-disable-line
+  new CatalogItem('Wine Glass', 'img/wine-glass.jpg');//eslint-disable-line
+}
 
 function randomThreePictures() {
   randomIndex1 = Math.floor(Math.random() * (catalogArray.length));
@@ -84,11 +86,14 @@ function randomThreePictures() {
   catalogArray[randomIndex3].tallyDisplayed = catalogArray[randomIndex3].tallyDisplayed + 1;
 }
 
+
+
 function updateChartArrays() {
   for (var i = 0; i < catalogArray.length; i++) {
     names[i] = catalogArray[i].imageName;
     clicks[i] = catalogArray[i].tallyClicked;
   }
+
 }
 
 
@@ -101,9 +106,14 @@ var data = {
     }]
 };
 
+function saveStuff() {
+  catalogArrayStringified = JSON.stringify(catalogArray);//eslint-disable-line
+  localStorage.setItem('catalogArrayStringified', catalogArrayStringified);
+}
+
 function drawChart() {
   var ctx = document.getElementById('clickChart').getContext('2d');
-  clickChart = new Chart(ctx,{
+  var clickChart = new Chart(ctx,{
     type: 'bar',
     data: data,
     options: {
@@ -127,6 +137,7 @@ function handleUserClick() {
     console.log('voting round: ' + votingRound);
     catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1].tallyClicked + 1;
     console.log(catalogArray[randomIndex1].imageName + ' clicked: ' + catalogArray[randomIndex1].tallyClicked + ' times');
+    saveStuff();
   }else if (userClick === 'center'){
     console.log('user clicked center');
     votingRound = votingRound + 1;
@@ -134,12 +145,14 @@ function handleUserClick() {
     catalogArray[randomIndex2].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
     console.log(catalogArray[randomIndex2]);
     console.log(catalogArray[randomIndex2].imageName + ' clicked: ' + catalogArray[randomIndex2].tallyClicked + ' times');
+    saveStuff();
   }else if (userClick === 'right') {
     console.log('user clicked right');
     votingRound = votingRound + 1;
     console.log('voting round: ' + votingRound);
     catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
     console.log(catalogArray[randomIndex3].imageName + ' clicked: ' + catalogArray[randomIndex3].tallyClicked + ' times');
+    saveStuff();
   }else {
     alert('That\'s not even a picture. Try again.');
   }
@@ -155,6 +168,14 @@ function handleUserClick() {
   }
 }
 
+
+if (localStorage.allImagesArrayStringified) {
+  var storedData = JSON.parse(localStorage.catalogArrayStringified);
+  catalogArray = storedData;
+
+} else {
+  makeMyStuff();
+}
 
 randomThreePictures();
 myThreePictures.addEventListener('click', handleUserClick);
