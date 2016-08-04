@@ -137,7 +137,6 @@ function handleUserClick() {
     console.log('voting round: ' + votingRound);
     catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1].tallyClicked + 1;
     console.log(catalogArray[randomIndex1].imageName + ' clicked: ' + catalogArray[randomIndex1].tallyClicked + ' times');
-    saveStuff();
   }else if (userClick === 'center'){
     console.log('user clicked center');
     votingRound = votingRound + 1;
@@ -145,20 +144,19 @@ function handleUserClick() {
     catalogArray[randomIndex2].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
     console.log(catalogArray[randomIndex2]);
     console.log(catalogArray[randomIndex2].imageName + ' clicked: ' + catalogArray[randomIndex2].tallyClicked + ' times');
-    saveStuff();
   }else if (userClick === 'right') {
     console.log('user clicked right');
     votingRound = votingRound + 1;
     console.log('voting round: ' + votingRound);
     catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
     console.log(catalogArray[randomIndex3].imageName + ' clicked: ' + catalogArray[randomIndex3].tallyClicked + ' times');
-    saveStuff();
   }else {
     alert('That\'s not even a picture. Try again.');
   }
   if (votingRound < 25) {
     randomThreePictures();
   }else {
+    saveStuff();
     myThreePictures.removeEventListener('click', handleUserClick);
     var button = document.createElement('button');
     button.textContent = 'you\'re done so click here';
@@ -169,7 +167,7 @@ function handleUserClick() {
 }
 
 
-if (localStorage.allImagesArrayStringified) {
+if (localStorage.catalogArrayStringified) {
   var storedData = JSON.parse(localStorage.catalogArrayStringified);
   catalogArray = storedData;
 
