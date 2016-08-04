@@ -8,6 +8,7 @@ var lastIndexArray = [0,1,2];
 var indexArray = [];
 var clicks = [];
 var names = [];
+var percentageClickedDisplayed = [];
 var catalogArrayStringified;
 var myThreePictures = document.getElementById('myThreePictures');
 var imgLeft = document.getElementById('left');
@@ -92,10 +93,16 @@ function updateChartArrays() {
   for (var i = 0; i < catalogArray.length; i++) {
     names[i] = catalogArray[i].imageName;
     clicks[i] = catalogArray[i].tallyClicked;
+    percentageClickedDisplayed[i] = ((catalogArray[i].tallyClicked / catalogArray[i].tallyDisplayed) * 100).toFixed(2);
   }
 
 }
 
+
+function saveStuff() {
+  catalogArrayStringified = JSON.stringify(catalogArray);//eslint-disable-line
+  localStorage.setItem('catalogArrayStringified', catalogArrayStringified);
+}
 
 var data = {
   labels: names,
@@ -106,12 +113,8 @@ var data = {
     }]
 };
 
-function saveStuff() {
-  catalogArrayStringified = JSON.stringify(catalogArray);//eslint-disable-line
-  localStorage.setItem('catalogArrayStringified', catalogArrayStringified);
-}
 
-function drawChart() {
+function drawClicksChart() {
   var ctx = document.getElementById('clickChart').getContext('2d');
   var clickChart = new Chart(ctx,{
     type: 'bar',
@@ -127,7 +130,34 @@ function drawChart() {
   });
 }
 
+var data1 = {
+  labels: names,
+  datasets: [
+    {
+      label: 'Percentage Clicks per Displays',
+      data: percentageClickedDisplayed,
+    }]
+};
 
+function drawPercentageChart() {
+  var ctx = document.getElementById('percentageChart').getContext('2d');
+  var percentageChart = new Chart(ctx,{
+    type: 'bar',
+    data: data1,
+    options: {
+      responsive: false
+    },
+    scales: [{
+      ticks: {
+        beginAtZero: true
+      }
+    }]
+  });
+}
+
+function refresh() {
+  document.location.reload(true);
+}
 
 function handleUserClick() {
   var userClick = event.target.id;
@@ -161,8 +191,12 @@ function handleUserClick() {
     var button = document.createElement('button');
     button.textContent = 'you\'re done so click here';
     myThreePictures.appendChild(button);
+    var restartButton = document.createElement('button');
+    restartButton.textContent = 'New vote session';
+    myThreePictures.appendChild(restartButton);
     updateChartArrays();
-    button.addEventListener('click', drawChart);
+    button.addEventListener('click', function() {drawClicksChart(); drawPercentageChart();} );
+    restartButton.addEventListener('click', refresh);
   }
 }
 
