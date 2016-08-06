@@ -29,7 +29,7 @@ function makeMyStuff() {
   new CatalogItem('Banana', 'img/banana.jpg');//eslint-disable-line
   new CatalogItem('Bathroom', 'img/bathroom.jpg');//eslint-disable-line
   new CatalogItem('Boots', 'img/boots.jpg');//eslint-disable-line
-  new CatalogItem('Breakfast', 'img/breakfast.jpg');//eslint-disable-line
+  new CatalogItem('Breakfast', 'img/Breakfast.jpg');//eslint-disable-line
   new CatalogItem('Bubblegum', 'img/bubblegum.jpg');//eslint-disable-line
   new CatalogItem('Chair', 'img/chair.jpg');//eslint-disable-line
   new CatalogItem('Cthulhu', 'img/cthulhu.jpg');//eslint-disable-line
