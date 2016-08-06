@@ -19,12 +19,13 @@ header {
 }
 
 p {
+  margin-top: 60px;
   text-align: center;
 }
 
 
 img {
-  margin-left: 40px;
+  margin-left: 45px;
   height: 200px;
   width: 200px;
 }
@@ -46,7 +47,7 @@ button {
 }
 
 #my_three_pictures {
-  padding-top: 20px;
+  padding-top: 70px;
 }
 
 canvas {
