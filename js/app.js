@@ -1,19 +1,21 @@
 'use strict';
-var randomIndex1 = 0;
-var randomIndex2 = 0;
-var randomIndex3 = 0;
+
+// Global variables :
+var randomIndex1;
+var randomIndex2;
+var randomIndex3;
 var votingRound = 0;
 var catalogArray = [];
 var lastIndexArray = [0,1,2];
-var indexArray = [];
 var clicks = [];
 var names = [];
 var percentageClickedDisplayed = [];
-var catalogArrayStringified;
-var myThreePictures = document.getElementById('myThreePictures');
+var myThreePictures = document.getElementById('my_three_pictures');
 var imgLeft = document.getElementById('left');
 var imgCenter = document.getElementById('center');
 var imgRight = document.getElementById('right');
+
+//Declaring functions:
 function CatalogItem(imageName, filePath) {
   this.imageName = imageName;
   this.filePath = filePath;
@@ -21,7 +23,6 @@ function CatalogItem(imageName, filePath) {
   this.tallyDisplayed = 0;
   catalogArray.push(this);
 }
-
 
 function makeMyStuff() {
   new CatalogItem('Bag', 'img/bag.jpg'); //eslint-disable-line
@@ -78,9 +79,9 @@ function randomThreePictures() {
   imgRight.src = catalogArray[randomIndex3].filePath;
   imgRight.alt = catalogArray[randomIndex3].imageName;
 
-  catalogArray[randomIndex1].tallyDisplayed = catalogArray[randomIndex1].tallyDisplayed + 1;
-  catalogArray[randomIndex2].tallyDisplayed = catalogArray[randomIndex2].tallyDisplayed + 1;
-  catalogArray[randomIndex3].tallyDisplayed = catalogArray[randomIndex3].tallyDisplayed + 1;
+  catalogArray[randomIndex1].tallyDisplayed++;
+  catalogArray[randomIndex2].tallyDisplayed++;
+  catalogArray[randomIndex3].tallyDisplayed++;
 }
 
 
@@ -95,12 +96,8 @@ function updateChartArrays() {
 }
 
 
-function saveStuff() {
-  catalogArrayStringified = JSON.stringify(catalogArray);//eslint-disable-line
-  localStorage.setItem('catalogArrayStringified', catalogArrayStringified);
-}
 
-var data = {
+var clicksData = {
   labels: names,
   datasets: [
     {
@@ -112,9 +109,9 @@ var data = {
 
 function drawClicksChart() {
   var ctx = document.getElementById('clickChart').getContext('2d');
-  var clickChart = new Chart(ctx,{
+  var clickChart = new Chart(ctx,{ //eslint-disable-line
     type: 'bar',
-    data: data,
+    data: clicksData,
     options: {
       responsive: false
     },
@@ -126,7 +123,7 @@ function drawClicksChart() {
   });
 }
 
-var data1 = {
+var percentageData = {
   labels: names,
   datasets: [
     {
@@ -137,9 +134,9 @@ var data1 = {
 
 function drawPercentageChart() {
   var ctx = document.getElementById('percentageChart').getContext('2d');
-  var percentageChart = new Chart(ctx,{
+  var percentageChart = new Chart(ctx,{ //eslint-disable-line
     type: 'bar',
-    data: data1,
+    data: percentageData,
     options: {
       responsive: false
     },
@@ -151,30 +148,26 @@ function drawPercentageChart() {
   });
 }
 
-function refresh() {
-  document.location.reload(true);
-}
 
 function handleUserClick() {
   var userClick = event.target.id;
   if (userClick === 'left') {
     console.log('user clicked left');
-    votingRound = votingRound + 1;
+    votingRound++;
     console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex1].tallyClicked = catalogArray[randomIndex1].tallyClicked + 1;
+    catalogArray[randomIndex1].tallyClicked++;
     console.log(catalogArray[randomIndex1].imageName + ' clicked: ' + catalogArray[randomIndex1].tallyClicked + ' times');
   }else if (userClick === 'center'){
     console.log('user clicked center');
-    votingRound = votingRound + 1;
+    votingRound++;
     console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex2].tallyClicked = catalogArray[randomIndex2].tallyClicked + 1;
-    console.log(catalogArray[randomIndex2]);
+    catalogArray[randomIndex2].tallyClicked++;
     console.log(catalogArray[randomIndex2].imageName + ' clicked: ' + catalogArray[randomIndex2].tallyClicked + ' times');
   }else if (userClick === 'right') {
     console.log('user clicked right');
-    votingRound = votingRound + 1;
+    votingRound++;
     console.log('voting round: ' + votingRound);
-    catalogArray[randomIndex3].tallyClicked = catalogArray[randomIndex3].tallyClicked + 1;
+    catalogArray[randomIndex3].tallyClicked++;
     console.log(catalogArray[randomIndex3].imageName + ' clicked: ' + catalogArray[randomIndex3].tallyClicked + ' times');
   }else {
     alert('That\'s not even a picture. Try again.');
@@ -182,20 +175,28 @@ function handleUserClick() {
   if (votingRound < 25) {
     randomThreePictures();
   }else {
+    function saveStuff() {
+      var catalogArrayStringified = JSON.stringify(catalogArray);
+      localStorage.setItem('catalogArrayStringified', catalogArrayStringified);
+    }
     saveStuff();
     myThreePictures.removeEventListener('click', handleUserClick);
+    var myButtons = document.getElementById('my_buttons');
     var button = document.createElement('button');
     button.textContent = 'you\'re done so click here';
-    myThreePictures.appendChild(button);
+    myButtons.appendChild(button);
     var restartButton = document.createElement('button');
     restartButton.textContent = 'New vote session';
-    myThreePictures.appendChild(restartButton);
+    myButtons.appendChild(restartButton);
     updateChartArrays();
     button.addEventListener('click', function() {drawClicksChart(); drawPercentageChart();} );
-    restartButton.addEventListener('click', refresh);
+    restartButton.addEventListener('click', function () {
+      document.location.reload(true);
+    });
   }
 }
 
+/////////////////////////////////////////////////
 
 if (localStorage.catalogArrayStringified) {
   var storedData = JSON.parse(localStorage.catalogArrayStringified);

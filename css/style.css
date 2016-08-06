@@ -1,10 +1,11 @@
- #notMyChart {
-margin: 0 auto;
-max-width: 50em;
-line-height: 1.5;
-padding: 4em 1em;
-font-family: 'Dosis', sans-serif;
+#not_my_chart {
+  margin: 0 auto;
+  max-width: 50em;
+  line-height: 1.5;
+  padding: 4em 1em;
+  font-family: 'Dosis', sans-serif;
 }
+
 header {
   color: white;
   background-image: url("../img/headerbackground.jpeg");
@@ -22,27 +23,32 @@ p {
 }
 
 
-
 img {
+  margin-left: 40px;
   height: 200px;
   width: 200px;
 }
 
-button {
-  display: block;
-	box-shadow:inset 0px 1px 0px 0px #9acc85;
-	background-color:#74ad5a;
-	border:1px solid #3b6e22;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:13px;
-	font-weight:bold;
-	padding:6px 12px;
+my_buttons {
+  position: absolute;
 }
-#myThreePictures {
+button {
+  margin-top: 40px;
+  margin-left: 140px;
+  box-shadow:inset 0px 1px 0px 0px #9acc85;
+  background-color:#74ad5a;
+  border:1px solid #3b6e22;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:13px;
+  font-weight:bold;
+  padding:6px 12px;
+}
+
+#my_three_pictures {
   padding-top: 20px;
 }
 
 canvas {
-  margin-left: 13%;
+ margin-left: 13%;
 }
